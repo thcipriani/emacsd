@@ -25,7 +25,9 @@
       helm
       markdown-mode
       neotree
-      monokai-theme))
+      monokai-theme
+      flycheck
+      puppet-mode))
 
 (dolist (p my-packages)
   (when (not (package-installed-p p))
@@ -51,6 +53,9 @@
 
 ;; Show parentheses matching
 (show-paren-mode 1)
+
+;; Use C-u as scroll up in evil mode
+(setq evil-want-C-u-scroll t)
 
 (use-package evil)
 (use-package evil-leader)
@@ -135,7 +140,9 @@
 
 (setq custom-file "~/.emacs.d/custom.el")
 (load custom-file)
+
 (server-start)
+
 (load-theme 'monokai t)
 
 ;; separate line numbers a bit
@@ -143,3 +150,6 @@
 
 ;; TODO: No recommended for some reason?
 (setq-default truncate-lines t)
+(set-face-font 'default "-*-terminesspowerline-*-*-*-*-28-*-*-*-*-*-*-*")
+(add-hook 'after-init-hook #'global-flycheck-mode)
+(use-package puppet-mode)
