@@ -24,7 +24,8 @@
       deft
       helm
       markdown-mode
-      neotree))
+      neotree
+      monokai-theme))
 
 (dolist (p my-packages)
   (when (not (package-installed-p p))
@@ -135,3 +136,10 @@
 (setq custom-file "~/.emacs.d/custom.el")
 (load custom-file)
 (server-start)
+(load-theme 'monokai t)
+
+;; separate line numbers a bit
+(setq linum-format "%4d \u2502 ")
+
+;; TODO: No recommended for some reason?
+(setq-default truncate-lines t)
