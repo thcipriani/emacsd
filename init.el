@@ -16,18 +16,20 @@
 
 (setq my-packages
     '(
-      use-package
+      deft
       evil
       evil-leader
-      org
-      magit
-      deft
-      helm
-      markdown-mode
-      neotree
-      monokai-theme
+      evil-tabs
+      evil-surround
       flycheck
-      puppet-mode))
+      helm
+      magit
+      markdown-mode
+      monokai-theme
+      neotree
+      org
+      puppet-mode
+      use-package))
 
 (dolist (p my-packages)
   (when (not (package-installed-p p))
@@ -54,20 +56,21 @@
 ;; Show parentheses matching
 (show-paren-mode 1)
 
-;; Use C-u as scroll up in evil mode
-(setq evil-want-C-u-scroll t)
 
 (use-package evil)
 (use-package evil-leader)
-(use-package evil-jumper)
+(use-package evil-surround)
+
+(global-evil-tabs-mode t)
+(global-evil-surround-mode 1)
+
+;; Use C-u as scroll up in evil mode
+(setq evil-want-C-u-scroll t)
 (evil-leader/set-leader ",")
 (setf sentence-end-double-space nil)
 (global-evil-leader-mode)
 (evil-mode 1)
-
 (evil-leader/set-key "q" 'delete-window)
-
-(require 'helm-config)
 
 ;; a buffer
 (evil-leader/set-key "ab" 'helm-mini)
@@ -83,6 +86,25 @@
 (evil-leader/set-key "hx" 'helm-mini)
 (global-set-key (kbd "M-x") 'helm-M-x)
 
+(evil-leader/set-key (kbd "gs") 'magit-status)
+(global-set-key (kbd "C-x g") 'magit-status)
+
+;; neotree
+(use-package neotree)
+(evil-leader/set-key "t" 'neotree-toggle)
+
+(evil-leader/set-key "v" 'split-window-right)
+(evil-leader/set-key "w" 'other-window)
+
+(add-hook 'neotree-mode-hook
+    (lambda ()
+        (define-key evil-normal-state-local-map (kbd "TAB") 'neotree-enter)
+        (define-key evil-normal-state-local-map (kbd "SPC") 'neotree-enter)
+        (define-key evil-normal-state-local-map (kbd "q") 'neotree-hide)
+        (define-key evil-normal-state-local-map (kbd "RET") 'neotree-enter)))
+
+
+(use-package helm-config)
 (setq helm-quick-update                   t ; do not display invisible candidates
     helm-split-window-in-side-p           t ; open helm buffer inside current window, not occupy whole other window
     helm-buffers-fuzzy-matching           t) ; fuzzy matching buffer names when non--nil
@@ -100,22 +122,8 @@
 ;; a note
 (evil-leader/set-key "an" 'deft)
 
-;; neotree
-(use-package neotree)
-(evil-leader/set-key "t" 'neotree-toggle)
-
-(evil-leader/set-key "v" 'split-window-right)
-(evil-leader/set-key "w" 'other-window)
-
-(add-hook 'neotree-mode-hook
-    (lambda ()
-        (define-key evil-normal-state-local-map (kbd "TAB") 'neotree-enter)
-        (define-key evil-normal-state-local-map (kbd "SPC") 'neotree-enter)
-        (define-key evil-normal-state-local-map (kbd "q") 'neotree-hide)
-        (define-key evil-normal-state-local-map (kbd "RET") 'neotree-enter)))
-
 ;; Customize styles
-(global-visual-line-mode 1)
+(global-visual-line-mode 0)
 (global-whitespace-mode 1)
 
 (setq whitespace-line-column 80)
@@ -141,15 +149,20 @@
 (setq custom-file "~/.emacs.d/custom.el")
 (load custom-file)
 
-(server-start)
+(load "server")
+(unless (server-running-p)
+  (server-start))
 
 (load-theme 'monokai t)
 
 ;; separate line numbers a bit
 (setq linum-format "%4d \u2502 ")
 
-;; TODO: No recommended for some reason?
-(setq-default truncate-lines t)
-(set-face-font 'default "-*-terminesspowerline-*-*-*-*-28-*-*-*-*-*-*-*")
 (add-hook 'after-init-hook #'global-flycheck-mode)
 (use-package puppet-mode)
+
+;; TODO: No recommended for some reason?
+(setq-default truncate-lines t)
+
+(setq browse-url-browser-function 'browse-url-generic
+    browse-url-generic-program "google-chrome")
