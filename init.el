@@ -164,5 +164,7 @@
 ;; TODO: No recommended for some reason?
 (setq-default truncate-lines t)
 
+;; (setq browse-url-browser-function 'browse-url-generic
+;;     browse-url-generic-program "google-chrome")
 (setq browse-url-browser-function 'browse-url-generic
-    browse-url-generic-program "google-chrome")
+    browse-url-generic-program "firefox")
