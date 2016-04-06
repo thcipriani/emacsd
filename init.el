@@ -22,10 +22,12 @@
       evil-tabs
       evil-surround
       flycheck
+      flyspell
       helm
       magit
       markdown-mode
       monokai-theme
+      leuven-theme
       neotree
       org
       puppet-mode
@@ -95,6 +97,8 @@
 
 (evil-leader/set-key "v" 'split-window-right)
 (evil-leader/set-key "w" 'other-window)
+(evil-leader/set-key "bn" 'next-buffer)
+(evil-leader/set-key "bp" 'previous-buffer)
 
 (add-hook 'neotree-mode-hook
     (lambda ()
@@ -110,9 +114,13 @@
     helm-buffers-fuzzy-matching           t) ; fuzzy matching buffer names when non--nil
 ;; (helm-mode 1)
 
+;; Org mode
+(add-to-list 'auto-mode-alist '("\\.org$" . org-mode))
+
 ;; Deft - note taking
 (use-package deft)
 (setq deft-extension "org")
+(setq deft-default-extension "org")
 (setq deft-directory "~/Documents/notes")
 (setq deft-text-mode 'org-mode)
 (setq deft-use-filename-as-title t)
@@ -153,13 +161,16 @@
 (unless (server-running-p)
   (server-start))
 
-(load-theme 'monokai t)
+(load-theme 'leuven t)
 
 ;; separate line numbers a bit
 (setq linum-format "%4d \u2502 ")
 
 (add-hook 'after-init-hook #'global-flycheck-mode)
 (use-package puppet-mode)
+
+;; puppet needs 4 spaces
+(setq puppet-indent-level 4)
 
 ;; TODO: No recommended for some reason?
 (setq-default truncate-lines t)
