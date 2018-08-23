@@ -13,6 +13,12 @@
     ("1b8d67b43ff1723960eb5e0cba512a2c7a2ad544ddb2533a90101fd1852b426e" "06f0b439b62164c6f8f84fdda32b62fb50b6d00e8b01c2208e55543a6337433a" "628278136f88aa1a151bb2d6c8a86bf2b7631fbea5f0f76cba2a0079cd910f7d" default)))
  '(fci-rule-color "#373b41")
  '(indent-tabs-mode nil)
+ '(org-agenda-files
+   (quote
+    ("~/org/habit-todo.org" "~/org/personal-todo.org" "~/org/work-todo.org")))
+ '(package-selected-packages
+   (quote
+    (php-mode go-mode use-package puppet-mode neotree monokai-theme markdown-mode magit leuven-theme helm go flycheck evil-tabs evil-surround evil-leader deft)))
  '(vc-annotate-background nil)
  '(vc-annotate-color-map
    (quote

@@ -47,7 +47,7 @@
 (when (fboundp 'scroll-bar-mode)
   (scroll-bar-mode -1))
 
-(set-default 'line-spacing 5)
+(set-default 'line-spacing 1)
 ;; (setq visible-bell t)
 ;; no bell
 (setq ring-bell-function 'ignore)
@@ -116,6 +116,9 @@
 
 ;; Org mode
 (add-to-list 'auto-mode-alist '("\\.org$" . org-mode))
+(define-key global-map "\C-cl" 'org-store-link)
+(define-key global-map "\C-ca" 'org-agenda)
+(setq org-log-done t)
 
 ;; Deft - note taking
 (use-package deft)
@@ -156,6 +159,42 @@
 
 (setq custom-file "~/.emacs.d/custom.el")
 (load custom-file)
+
+;; Org capture to use in xmonad
+;; <http://www.solasistim.net/posts/org_mode_with_capture_and_xmonad/>
+(setq org-capture-templates
+    '(("t" "Todo" entry (file (concat org-directory "/work-todo.org"))
+       "* TODO %x %?")))
+
+(defadvice org-capture-finalize
+        (after delete-capture-frame activate)
+    "Advise capture-finalize to close the frame"
+    (if (equal "capture" (frame-parameter nil 'name))
+        (delete-frame)))
+
+(defadvice org-capture-destroy
+        (after delete-capture-frame activate)
+    "Advise capture-destroy to close the frame"
+    (if (equal "capture" (frame-parameter nil 'name))
+       (delete-frame)))
+
+;; make the frame contain a single window. by default org-capture
+;; splits the window.
+(add-hook 'org-capture-mode-hook
+    'delete-other-windows)
+
+(defun make-capture-frame ()
+    "Create a new frame and run org-capture."  
+    (interactive)
+    (make-frame '((name . "capture")
+        (width . 120)
+        (height . 15)))
+    (select-frame-by-name "capture")
+    (setq word-wrap 1)
+    (setq truncate-lines nil)
+    ;; Using the second argument to org-capture, we bypass interactive selection
+    ;; and use the existing template defined above.
+    (org-capture nil "t"))
 
 (load "server")
 (unless (server-running-p)
