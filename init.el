@@ -26,6 +26,7 @@
       helm
       magit
       markdown-mode
+      poet-theme
       monokai-theme
       leuven-theme
       neotree
@@ -163,8 +164,7 @@
 ;; Org capture to use in xmonad
 ;; <http://www.solasistim.net/posts/org_mode_with_capture_and_xmonad/>
 (setq org-capture-templates
-    '(("t" "Todo" entry (file (concat org-directory "/work-todo.org"))
-       "* TODO %x %?")))
+    '(("t" "Todo" entry (file "work-todo.org") "* TODO %x %?")))
 
 (defadvice org-capture-finalize
         (after delete-capture-frame activate)
@@ -184,14 +184,14 @@
     'delete-other-windows)
 
 (defun make-capture-frame ()
-    "Create a new frame and run org-capture."  
+    "Create a new frame and run org-capture."
     (interactive)
     (make-frame '((name . "capture")
         (width . 120)
         (height . 15)))
     (select-frame-by-name "capture")
-    (setq word-wrap 1)
-    (setq truncate-lines nil)
+    ;; (setq word-wrap 1)
+    ;; (setq truncate-lines nil)
     ;; Using the second argument to org-capture, we bypass interactive selection
     ;; and use the existing template defined above.
     (org-capture nil "t"))
