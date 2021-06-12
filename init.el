@@ -1,6 +1,6 @@
 ;; Packages
 (require 'package)
-(setq package-archives '(("melpa" . "http://melpa.milkbox.net/packages/")
+(setq package-archives '(("melpa" . "https://stable.melpa.org/packages/")
                          ("org" . "http://orgmode.org/elpa/")
                          ("gnu" . "http://elpa.gnu.org/packages/")))
 
@@ -31,6 +31,7 @@
       leuven-theme
       neotree
       org
+      org-journal
       puppet-mode
       use-package))
 
@@ -134,6 +135,39 @@
 ;; a note
 (evil-leader/set-key "an" 'deft)
 
+;; org-crypt
+;; Encrypt specific parts of a file, but not the headline, etc
+(require 'org-crypt)
+(org-crypt-use-before-save-magic)
+(setq org-tags-exclude-from-inheritance (quote ("crypt")))
+;; GPG key to use for encryption
+;; Either the Key ID or set to nil to use symmetric encryption.
+(setq thcipriani-key "F6DAD285018FAC02")
+(setq thcipriani-mail "tcipriani@wikimedia.org")
+(setq org-crypt-key thcipriani-key)
+(setq-default epa-file-encrypt-to thcipriani-mail)
+(setq-default epa-file-select-keys nil)
+
+;; Fix <s
+(require 'org-tempo)
+
+;; Auto-saving does not cooperate with org-crypt.el: so you need
+;; to turn it off if you plan to use org-crypt.el quite often.
+;; Otherwise, you'll get an (annoying) message each time you
+;; start Org.
+
+;; To turn it off only locally, you can insert this:
+;;
+;; # -*- buffer-auto-save-file-name: nil; -*-
+(setq auto-save-default nil)
+
+;; org-journal
+(customize-set-variable 'org-journal-encrypt-journal t)
+(use-package org-journal
+  :ensure t
+  :defer t)
+(global-set-key (kbd "C-c C-j") 'org-journal-new-entry)
+
 ;; Customize styles
 (global-visual-line-mode 0)
 (global-whitespace-mode 1)
@@ -164,7 +198,7 @@
 ;; Org capture to use in xmonad
 ;; <http://www.solasistim.net/posts/org_mode_with_capture_and_xmonad/>
 (setq org-capture-templates
-    '(("t" "Todo" entry (file "work-todo.org") "* TODO %x %?")))
+    '(("t" "Todo" entry (file "todo.org") "* TODO %x %?")))
 
 (defadvice org-capture-finalize
         (after delete-capture-frame activate)
