@@ -121,6 +121,8 @@
 (define-key global-map "\C-cl" 'org-store-link)
 (define-key global-map "\C-ca" 'org-agenda)
 (setq org-log-done t)
+(setq org-todo-keywords
+    '((sequence "TODO(t)" "WAITING(w)" "NEXT-ACTION(n)" "|" "DONE(d)" "INVALID(i)" "REJECTED(r)")))
 
 ;; Deft - note taking
 (use-package deft)
@@ -159,7 +161,12 @@
 ;; To turn it off only locally, you can insert this:
 ;;
 ;; # -*- buffer-auto-save-file-name: nil; -*-
-(setq auto-save-default nil)
+; (setq auto-save-default t)
+; (add-hook 'org-mode-hook 'my-org-mode-autosave-settings)
+; (defun my-org-mode-autosave-settings ()
+;   (set (make-local-variable 'auto-save-visited-file-name) t)
+;   (setq auto-save-interval 20))
+(add-hook 'auto-save-hook 'org-save-all-org-buffers)
 
 ;; org-journal
 (customize-set-variable 'org-journal-encrypt-journal t)
@@ -174,10 +181,14 @@
 
 (setq whitespace-line-column 80)
 
-(setq backup-directory-alist
-      `((".*" . ,temporary-file-directory)))
-(setq auto-save-file-name-transforms
-      `((".*" ,temporary-file-directory t)))
+(setq
+   backup-by-copying t      ; don't clobber symlinks
+   backup-directory-alist
+    '(("." . "~/org/backup"))    ; don't litter my fs tree
+   delete-old-versions t
+   kept-new-versions 6
+   kept-old-versions 2
+   version-control t)       ; use versioned backups
 
 (setq whitespace-style
       (quote (face
@@ -251,4 +262,4 @@
 ;; (setq browse-url-browser-function 'browse-url-generic
 ;;     browse-url-generic-program "google-chrome")
 (setq browse-url-browser-function 'browse-url-generic
-    browse-url-generic-program "firefox")
+    browse-url-generic-program "google-chrome-stable")
