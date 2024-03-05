@@ -61,9 +61,9 @@
 (use-package helm
   :defer t
   :bind (("C-x C-f" . helm-find-files)
-	 ("C-x b" . helm-mini)
-	 ("M-x" . helm-M-x)
-	 ("C-x g" . magit-status)))
+     ("C-x b" . helm-mini)
+     ("M-x" . helm-M-x)
+     ("C-x g" . magit-status)))
 
 ;; Appearance
 (use-package all-the-icons) ;; Run M-x all-the-icons-install-fonts
@@ -142,7 +142,7 @@
   (visual-line-mode 1))
 
 (use-package org
-  :hook (org-mode . thcirpiani/org-mode-setup)
+  :hook (org-mode . thcipriani/org-mode-setup)
   :config
   (setq org-log-into-drawer t)
   (setq org-todo-keywords '((sequence "TODO(t)" "WAITING(w)" "NEXT-ACTION(n)" "|" "DONE(d)" "INVALID(i)" "REJECTED(r)")))
